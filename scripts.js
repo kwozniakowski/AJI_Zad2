@@ -2,6 +2,11 @@
 let todoList = []; //declares a new array for Your todo list
 
 let initList = function() {
+    let savedList = window.localStorage.getItem("todos");
+    if (savedList != null)
+        todoList = JSON.parse(savedList);
+    else
+    //code creating a default list with 2 items
     todoList.push(
         {
             title: "Learn JS",
@@ -70,4 +75,7 @@ let addTodo = function() {
     };
     //add item to the list
     todoList.push(newTodo);
+    //save item to local storage
+    window.localStorage.setItem("todos", JSON.stringify(todoList));
+
 }
