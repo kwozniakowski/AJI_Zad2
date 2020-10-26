@@ -31,26 +31,35 @@ let deleteTodo = function(index) {
 
 let updateTodoList = function() {
     let todoListDiv = document.getElementById("todoListView");
+    let filterInput = document.getElementById("inputSearch");
     //remove all elements
     while (todoListDiv.firstChild) {
         todoListDiv.removeChild(todoListDiv.firstChild);
     }
     //add all elements
     for (let todo in todoList) {
-        let newElement = document.createElement("div");
-        let newContent = document.createTextNode(
-            todoList[todo].title + " " + todoList[todo].description);
-        newElement.appendChild(newContent);
-        todoListDiv.appendChild(newElement);
+        if (
+            (filterInput.value === "") ||
+            (todoList[todo].title.includes(filterInput.value)) ||
+            (todoList[todo].description.includes(filterInput.value))
+        ) {
+            let newElement = document.createElement("p");
+            let newContent = document.createTextNode(todoList[todo].title + " " +
+                todoList[todo].description);
+            newElement.appendChild(newContent);
+            todoListDiv.appendChild(newElement);
 
-        let newDeleteButton = document.createElement("input"); //creating removing button
-        newDeleteButton.type = "button";
-        newDeleteButton.value = "x";
-        newDeleteButton.addEventListener("click",
-            function() {
-                deleteTodo(todo); //listener triggering the function which removes array element by index
-            });
-        newElement.appendChild(newDeleteButton); //adding to HTML
+            let newDeleteButton = document.createElement("input"); //creating removing button
+            newDeleteButton.type = "button";
+            newDeleteButton.value = "x";
+            newDeleteButton.addEventListener("click",
+                function() {
+                    deleteTodo(todo); //listener triggering the function which removes array element by index
+                });
+            newElement.appendChild(newDeleteButton); //adding to HTML
+        }
+
+
     }
 }
 setInterval(updateTodoList, 1000);
