@@ -1,28 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="theme.css">
+    <!--link rel="stylesheet" type="text/css" href="theme.css"-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="scripts.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>MyTODO App</title>
 </head>
 <body>
-    <h1>MyNotes</h1>
     <div>
-        <label>Search</label>
-        <input type="text" id="inputSearch" placeholder="Type Your seach here..."/>
+        <div class="container bg-primary">
+            <h1 class="pt-4">MyNotes</h1>
+            <form>
+                <div class="form-row py-4">
+                    <div class="col-7">
+                        <input class="form-control" type="text" id="inputSearch" placeholder="Type Your seach here..."/>
+                    </div>
+                </div>
+            </form>
+            <div id="todoListView">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <form>
+                <div class="form-row py-4">
+                    <div class="col">
+                        <input class="form-control" type="text" id="inputTitle" placeholder="Title"/>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" id="inputDescription" placeholder="Description"/>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" id="inputPlace" placeholder="Place"/>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="date" id="inputDate"/>
+                    </div>
+                    <input class="btn btn-primary" type="button" value="add"
+                           onclick="addTodo()"/>
+
+                </div>
+            </form>
+        </div>
     </div>
-    <div id="todoListView"></div>
 </body>
-<form>
-    <label>Title</label>
-    <input type="text" id="inputTitle"/>
-    <label>Description</label>
-    <input type="text" id="inputDescription"/>
-    <label>Place</label>
-    <input type="text" id="inputPlace"/>
-    <label>Due date</label>
-    <input type="date" id="inputDate"/>
-    <input type="button" value="add"
-           onclick="addTodo()"/>
-</form>
+
 </html>
