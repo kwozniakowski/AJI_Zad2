@@ -39,75 +39,53 @@ $.ajax({
 });
 
 let updateTodoList = function() {
-    let todoListDiv = document.getElementById("todoListView");
-    todoListDiv.classList.add("table");
-    todoListDiv.classList.add("table-light");
-    let filterInput = document.getElementById("inputSearch");
-    let beginDateInput = document.getElementById("beginDate");
-    let beginDate = new Date(beginDateInput.value);
-    let endDateInput = document.getElementById("endDate");
-    let endDate = new Date(endDateInput.value);
+    let todoListDiv = $("#todoListView");
     //remove all elements
-
-    let newTable = document.createElement("table");
-    newTable.className = "table";
-    let newRow = document.createElement("tr");
+    todoListDiv.empty();
+    todoListDiv.addClass("table table-light");
+    let filterInput = $("#inputSearch");
+    let beginDateInput = $("#beginDate");
+    let beginDate = new Date(beginDateInput.val());
+    let endDateInput = $("#endDate");
+    let endDate = new Date(endDateInput.val());
+    todoListDiv.append("<table></table>");
+    todoListDiv.find("table").append("<tr></tr>");
     let headers = ["Title","Description","Place","Date"];
     for (let header of headers){
-        let newTableHeader = document.createElement("th");
-        let headerContent = document.createTextNode(header);
-        newTableHeader.appendChild(headerContent)
-        newRow.appendChild(newTableHeader);
+        todoListDiv.find("table tr:last").append("<th>"+header+"</th>");
     }
-    newTable.appendChild(newRow);
-
+    console.log(todoList.toString());
     //add all elements
     for (let todo in todoList)
     {
-        if ((filterInput.value == "") ||
-            (todoList[todo].title.includes(filterInput.value)) ||
-            (todoList[todo].description.includes(filterInput.value)))
+        if ((filterInput.val() == "") ||
+            (todoList[todo].title.includes(filterInput.val())) ||
+            (todoList[todo].description.includes(filterInput.val())))
             //Problem rozwiazalismy poprzez zrobienie z dat Stringow i ich porownanie
             if( ( beginDate.toString() === "Invalid Date" || endDate.toString() === "Invalid Date" ) ||
                 (( Date.parse(todoList[todo].dueDate.toString()) >= Date.parse(beginDate.toString()) ) &&
                 ( Date.parse(todoList[todo].dueDate.toString()) <= Date.parse(endDate.toString()) )))
                 {
-                let newTableRow = document.createElement("tr");
-                for(let element in todoList[todo]) {
-                    let newCell = document.createElement("td");
-                    let newCellContent = null;
-                    if (todoList[todo][element]) {
-                        if(todoList[todo][element] === todoList[todo].dueDate)
-                        {
-                            newCellContent = document.createTextNode(displayableDate(todoList[todo][element]));
-                        }
-                        else
-                        {
-                            newCellContent = document.createTextNode(todoList[todo][element]);
+                    todoListDiv.find("table").append("<tr></tr>");
+                    for(let element in todoList[todo]) {
+                        if (todoList[todo][element]) {
+                            if (todoList[todo][element] === todoList[todo].dueDate) {
+                                todoListDiv.find("table tr:last").append("<td>" + displayableDate(todoList[todo][element]) + "</td>");
+                            } else {
+                                todoListDiv.find("table tr:last").append("<td>" + todoList[todo][element] + "</td>");
+                            }
+                        } else {
+                            todoListDiv.find("table tr:last").append("<td>" + "Not defined" + "</td>");
                         }
                     }
-                    else {
-                        newCellContent = document.createTextNode("Not defined");
-                    }
-                    newCell.appendChild(newCellContent);
-                    newTableRow.appendChild(newCell);
+                    todoListDiv.find("table tr:last").append("<input>");
+                    todoListDiv.find("table tr:last input").attr("type", "button");
+                    todoListDiv.find("table tr:last input").val("x");
+                    todoListDiv.find("table tr:last input").addClass("btn btn-primary");
+                    todoListDiv.find("table tr:last input").click(function() {
+                        deleteTodo(todo);
+                    });
                 }
-                let newDeleteButton = document.createElement("input");
-                newDeleteButton.type = "button";
-                newDeleteButton.value = "x";
-                newDeleteButton.className = "btn btn-primary";
-                newDeleteButton.addEventListener("click", function() {
-                    deleteTodo(todo);
-                });
-                newTableRow.appendChild(newDeleteButton);
-                newTable.appendChild(newTableRow);
-
-            }
-        while (todoListDiv.firstChild) {
-            todoListDiv.removeChild(todoListDiv.firstChild);
-        }
-        todoListDiv.appendChild(newTable);
-
     }
 
 
@@ -122,15 +100,15 @@ let deleteTodo = function(index) {
 
 let addTodo = function() {
     //get the elements in the form
-    let inputTitle = document.getElementById("inputTitle");
-    let inputDescription = document.getElementById("inputDescription");
-    let inputPlace = document.getElementById("inputPlace");
-    let inputDate = document.getElementById("inputDate");
+    let inputTitle = $("#inputTitle");
+    let inputDescription = $("#inputDescription");
+    let inputPlace = $("#inputPlace");
+    let inputDate = $("#inputDate");
     //get the values from the form
-    let newTitle = inputTitle.value;
-    let newDescription = inputDescription.value;
-    let newPlace = inputPlace.value;
-    let newDate = new Date(inputDate.value);
+    let newTitle = inputTitle.val();
+    let newDescription = inputDescription.val();
+    let newPlace = inputPlace.val();
+    let newDate = new Date(inputDate.val());
     //create new item
     let newTodo = {
         title: newTitle,
